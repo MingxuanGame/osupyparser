@@ -22,8 +22,11 @@ class OsuFile:
     https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29
     """
 
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: Optional[str] = None, content: Optional[str] = None):
         self.__file_path: str = file_path
+        self._content = content
+        if file_path is None and content is None:
+            raise ValueError("Must provide one of file_path and content")
 
         # Header of file.
         self.file_version: int = 0
@@ -95,9 +98,13 @@ class OsuFile:
 
     def parse_file(self):
         """Parses sections and set them to class variables."""
-
-        with open(self.__file_path, "rb") as stream:
-            buffer = stream.read()
+        if self.__file_path is not None:
+            with open(self.__file_path, "rb") as stream:
+                buffer = stream.read()
+        elif self._content is not None:
+            buffer = self._content
+        else:
+            raise ValueError("No content provided")
         # Strip lines.
         lines = list(
             map(lambda x: x.strip(), buffer.decode("utf-8-sig").split("\n")))
