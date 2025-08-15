@@ -22,7 +22,7 @@ class OsuFile:
     https://osu.ppy.sh/wiki/en/Client/File_formats/Osu_%28file_format%29
     """
 
-    def __init__(self, file_path: Optional[str] = None, content: Optional[str] = None):
+    def __init__(self, file_path: Optional[str] = None, content: Optional[bytes] = None):
         self.__file_path: str = file_path
         self._content = content
         if file_path is None and content is None:
