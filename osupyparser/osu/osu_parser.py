@@ -343,7 +343,8 @@ class OsuFile:
                 duration=duration,
                 end_time=(int(data[2]) + duration),
                 curve_type=curve_type,
-                end_position=points_list[-1]
+                # 某些不知名taiko小谱面（1206151）上原来的代码会出错。鉴于taiko的滑条跟osu里面写的位置无关（https://osu.ppy.sh/wiki/Client/File_formats/osu_(file_format)），这么搞没问题
+                end_position=points_list[-1] if len(points_list) != 0 else Position(int(data[0]),int[data[1]])
             )
             if len(data) > 10:
                 hitobject.additions = self.parse_addition(data[10])
